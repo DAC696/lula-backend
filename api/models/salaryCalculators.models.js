@@ -144,7 +144,7 @@ const enlistAllSalaryCalculatorsByType = async (salaryCalculators) =>
     {
         if (salaryCalculators.type == 'location')
         {
-            const location = await Location.findOne({ locId: salaryCalculators.locId });
+            const location = await Location.findById(salaryCalculators.locId);
             const employess = await Employee.find({ _locationId: location._id });
             // console.log(employess);
             const employeesIds = employess.map(e =>
