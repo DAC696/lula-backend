@@ -33,4 +33,5 @@ router.get("/list", checkAuth, SalaryCalculatorController.enlistAllSalaryCalcula
 
 router.get("/list/:employeeId", checkAuth, EmployeeValidator.getEmployeeByIdValidator, SalaryCalculatorController.enlistAllSalaryCalculatorsByEmployeeId)
 
+router.post('/list/type',SalaryCalculatorController.getSalaryCalculatorByType)
 module.exports = router;

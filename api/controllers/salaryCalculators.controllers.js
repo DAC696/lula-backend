@@ -349,6 +349,36 @@ const enlistAllSalaryCalculatorsByEmployeeId = async (req, res, next) => {
   }
 };
 
+const getSalaryCalculatorByType = async (req, res, next) => {
+  try
+  {
+    const { type, locationId, startDate, endDate, employeeId, } = req.body;
+
+    const salaryCalculators = await SalaryCalculatorModel.enlistAllSalaryCalculatorsByType(req.body);
+
+    return res.status(StatusCodes.OK).json({
+
+      success: true,
+      hasError: false,
+      total: salaryCalculators ? salaryCalculators.length : 0,
+      payload: salaryCalculators
+
+    })
+
+  } catch (error) {
+    console.log(error);
+
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+
+      success: false,
+      hasError: true,
+      error: ["Internal Server Error"]
+
+    })
+
+  }
+};
+
 module.exports = {
 
   addSalaryCalculator,
@@ -356,6 +386,7 @@ module.exports = {
   deleteSalaryCalculatorById,
   updateSalaryCalculatorById,
   enlistAllSalaryCalculators,
-  enlistAllSalaryCalculatorsByEmployeeId
+  enlistAllSalaryCalculatorsByEmployeeId,
+  getSalaryCalculatorByType
 
 };

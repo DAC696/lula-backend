@@ -1,4 +1,6 @@
 const SalaryCalculator = require('../schemas/salaryCalculator');
+const Employee = require('../schemas/employee');
+const Location=require('../schemas/location');
 const { sendCustomEvent } = require("../misc/helperFunctions");
 const moment = require('moment')
 
@@ -95,8 +97,9 @@ const enlistAllSalaryCalculators = async (startDate=undefined, endDate=undefined
         if(!startDate || !endDate){
 
             const salaryCalculators = await SalaryCalculator.find()
-                .populate("_employeeId", "firstName lastName")
-                .lean()
+                .populate({ path: '_employeeId', select: "-_id firstName lastName", model: 'Employee', populate: { path: '_roleId', select: 'roleName -_id', model: 'Role' } })
+                .populate({path:'_employeeId',select: "-_id firstName lastName", model: 'Employee',populate:{path:'_locationId',select:'locName -_id',model:'Location'}})
+                .lean();
             return salaryCalculators
         }else if(startDate && endDate){
             const conditionObj = {}
@@ -104,7 +107,9 @@ const enlistAllSalaryCalculators = async (startDate=undefined, endDate=undefined
             conditionObj["endDate"] = {$gte: moment(startDate).toDate(),$lte: moment(endDate).toDate()}
      
             const salaryCalculators = await SalaryCalculator.find() 
-                .lean()
+               .populate({ path: '_employeeId', select: "-_id firstName lastName", model: 'Employee', populate: { path: '_roleId', select: 'roleName -_id', model: 'Role' } })
+                .populate({path:'_employeeId',select: "-_id firstName lastName", model: 'Employee',populate:{path:'_locationId',select:'locName -_id',model:'Location'}})
+                .lean();
 
                 return salaryCalculators
 
@@ -132,6 +137,45 @@ const enlistAllSalaryCalculatorsByEmployeeId = async (employeeId) => {
         console.log(error);
     }
 }
+//get Salary Calcualtor by type
+const enlistAllSalaryCalculatorsByType = async (salaryCalculators) =>
+{
+    try
+    {
+        if (salaryCalculators.type == 'location')
+        {
+            const location = await Location.findOne({ locId: salaryCalculators.locId });
+            const employess = await Employee.find({ _locationId: location._id });
+            // console.log(employess);
+            const employeesIds = employess.map(e =>
+            {
+                return e._id;
+            })
+            const salaryCalcualtorObject = await SalaryCalculator.find({ _employeeId: { $in: employeesIds } })
+                .populate({ path: '_employeeId', select: "-_id firstName lastName", model: 'Employee', populate: { path: '_roleId', select: 'roleName -_id', model: 'Role' } })
+                .populate({path:'_employeeId',select: "-_id firstName lastName", model: 'Employee',populate:{path:'_locationId',select:'locName -_id',model:'Location'}})
+                .lean();
+            return salaryCalcualtorObject
+        } else if (salaryCalculators.type == 'date')
+        {
+            const salaryCalculatorObject = await SalaryCalculator.find({ _employeeId: salaryCalculators.employId,startDate:{$gte:moment(salaryCalculators.fromDate)},endDate:{$lt:moment(salaryCalculators.toDate)}, })
+                .populate({ path: '_employeeId', select: "-_id firstName lastName", model: 'Employee', populate: { path: '_roleId', select: 'roleName -_id', model: 'Role' } })
+                .populate({path:'_employeeId',select: "-_id firstName lastName", model: 'Employee',populate:{path:'_locationId',select:'locName -_id',model:'Location'}})
+                .lean();
+            return salaryCalculatorObject;
+        } else if (salaryCalculators.type == 'all')
+        {
+            const salaryCalculatorObject = await SalaryCalculator.find()
+                .populate({ path: '_employeeId', select: "-_id firstName lastName", model: 'Employee', populate: { path: '_roleId', select: 'roleName -_id', model: 'Role' } })
+                .populate({path:'_employeeId',select: "-_id firstName lastName", model: 'Employee',populate:{path:'_locationId',select:'locName -_id',model:'Location'}})
+                .lean();
+            return salaryCalculatorObject
+    }
+    }catch (error) {
+        console.log(error);
+    }
+}
+
 
 
 const getSalaryCalculatorsByIds = async (salaryCalculators) => {
@@ -154,6 +198,7 @@ module.exports = {
     updateSalaryCalculatorById,
     deleteSalaryCalculatorById,
     enlistAllSalaryCalculators,
-    enlistAllSalaryCalculatorsByEmployeeId
+    enlistAllSalaryCalculatorsByEmployeeId,
+    enlistAllSalaryCalculatorsByType
 
 }
