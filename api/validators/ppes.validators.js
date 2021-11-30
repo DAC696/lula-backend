@@ -238,11 +238,62 @@ const getPpeListByEmployeeIdValidator = (req, res, next) => {
     }
 }
 
+const exportPpeValidator = (req, res, next) => {
+    try {
+
+        const errors = {};
+
+        const { employeeId } = req.params;
+
+        if (isEmpty(employeeId)) {
+
+            errors.employeeId = 'Employee Id is required.';
+
+        } else if (!isValidObjectId(employeeId)) {
+
+            errors.employeeId = 'Employee Id is not valid ObjectId.';
+
+        }
+
+        
+
+
+        //check error object, if there's an error then it's length will not be zero
+        if (Object.keys(errors).length > 0) {
+
+            //return errors in array
+            return res.status(StatusCodes.BAD_REQUEST).json({
+                success: false,
+                hasError: true,
+                error: [errors]
+            })
+
+        } else {
+
+            //call next handler
+            next();
+
+        }
+
+    } catch (error) {
+        console.log(error)
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+
+            message: 'Internal Server Error',
+            success: false,
+            hasError: true,
+            error: [error]
+
+        })
+    }
+}
+
 module.exports = {
 
     addPpeValidator,
     getPpeByIdValidator,
     updatePpeByIdValidator,
-    getPpeListByEmployeeIdValidator
+    getPpeListByEmployeeIdValidator,
+    exportPpeValidator
 
 }

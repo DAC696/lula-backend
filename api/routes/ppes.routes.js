@@ -22,4 +22,6 @@ router.post("/update/:ppeId", checkAuth, PpeValidator.updatePpeByIdValidator, Pp
 //delte ppe by id
 router.delete("/delete/:ppeId", checkAuth, PpeValidator.getPpeByIdValidator, PpeController.deletePpeById);
 
+router.get('/exportppe/:employeeId',PpeValidator.exportPpeValidator,PpeController.exportPpe)
+
 module.exports = router;

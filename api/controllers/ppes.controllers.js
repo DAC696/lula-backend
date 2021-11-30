@@ -3,6 +3,35 @@ const { isEmpty } = require("../../utils/custom.validator")
 const PpeModel = require("../models/ppes.models");
 const EmployeeModel = require("../models/employees.models");
 const { StatusCodes } = require("http-status-codes");
+const pdf = require('pdf-creator-node');
+const fs = require('fs');
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+const { v4: uuidv4 } = require('uuid');
+const { response } = require("express");
+
+
+const storageEngine = multer.diskStorage({
+  destination: './public/uploads/',
+  // filename: function (req, file, fn) {
+  //   fn(null, req.body.title + path.extname(file.originalname)); //+'-'+file.fieldname
+  // },
+});
+const upload = multer({
+  storage: storageEngine,
+  limits: { fileSize: 20000000 },
+  fileFilter: function (req, file, callback)
+  {
+    validateFile(file, callback);
+  },
+}).single('file');
+
+//cloudianry
+cloudinary.config({
+  cloud_name: 'dkf8mfcra',
+  api_key: '934243125143259',
+  api_secret: 'y-i2CniEEzeWNt7BUYjDMApfu24',
+});
 
 /**
  * @description let user add Ppe
@@ -250,6 +279,94 @@ const deletePpeById = async (req, res, next) => {
       error: ["Internal Server Error"]
 
     })
+  }
+};
+
+const exportPpe = async (req, res, next) => {
+  try {
+
+    const { employeeId } = req.params;
+
+    const employee = await EmployeeModel.getEmployeeById(employeeId);
+    if (isEmpty(employee)) {
+
+      return res.status(StatusCodes.NOT_FOUND).json({
+
+        success: false,
+        hasError: true,
+        error: ["Employee Not found of this id"]
+
+      })
+
+    };
+    // const newArray = [];
+    // newArray.push(employee);
+    const html = fs.readFileSync(__dirname+'/pdf.html', 'utf8');
+           const options = {
+  format: 'A3',
+  orientation: 'portrait',
+  border: '10mm',
+};
+    const document = {
+      html: html,
+      data: {
+        employee: employee,
+      },
+      path: __dirname+'/ppe.pdf',
+      type: "",
+    };
+    pdf.create(document, options).then(async response =>
+    {
+      await cloudinary.uploader.upload(
+        response.filename,
+        {
+          resource_type: 'auto',
+          public_id: 'ppeUplaoder/' + uuidv4(),
+          chunk_size: 6000000,
+        },
+        function (error, result)
+        {
+          if (error)
+          {
+            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+              success: false,
+              hasError: true,
+              error: ["Internal Server Error"]
+
+            });
+             
+          }
+          return res.status(StatusCodes.OK).json({
+
+            success: true,
+            hasError: false,
+            payload: result.url
+          });
+        }
+      );
+
+
+    }).catch(err =>
+    {
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        hasError: true,
+        error: ["Internal Server Error"]
+
+      });
+
+    })
+
+  } catch (error) {
+    console.log(error);
+
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+
+      success: false,
+      hasError: true,
+      error: ["Internal Server Error"]
+
+    })
 
   }
 };
@@ -259,6 +376,7 @@ module.exports = {
   addPpe,
   updatePpeById,
   getPpeListByEmployeeId,
-  deletePpeById
+  deletePpeById,
+  exportPpe
 
 };
