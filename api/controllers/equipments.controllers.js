@@ -38,7 +38,7 @@ const addEquipment = async (req, res, next) => {
     } = req.body
 
     const location = await LocationModel.getLocationById(locationId);
-
+    const allLocations = await EquipmentModel.enlistAllEquipmentsByLocationId(locationId);
     if (isEmpty(location)) {
 
       return res.status(StatusCodes.NOT_FOUND).json({
@@ -48,14 +48,15 @@ const addEquipment = async (req, res, next) => {
         error: ["Location Not found of this id"]
 
       })
-
     }
-
+    const referenceNumber = `${location.locId}-0000${allLocations.length}`;
+    console.log(referenceNumber);
     //prepare object for storing equipment in db
 
     const prepObj = {
       _id: mongoose.Types.ObjectId(),
       systems,
+      referenceNumber,
       reference,
       equipmentName,
       manufacturer,

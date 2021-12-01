@@ -8,6 +8,10 @@ const equipmentSchema = mongoose.Schema({
         type: String,
         trim: true
     },
+    referenceNumber: {
+        type: String,
+        trim: true,
+    },
     reference: {
         type: String,
         trim: true

@@ -17,7 +17,10 @@
     <title>PPE Report</title>
 </head>
 <body>
-    <table >
+  <div style="text-align: center;">
+  <img style=" width:30mm" src="https://i.ibb.co/hLsm34g/Whats-App-Image-2021-12-01-at-12-46-25-PM.jpg" />
+  </div>  
+  <table style="margin-top:20px;" >
           <tbody>
               <!-- {{employee}} -->
               <tr style='border: 1px solid black;'>
@@ -33,7 +36,7 @@
       <td style='border:1px solid black; border-left:none'></td>
             </tr>
             <tr>
-              <td style='border:1px solid black'>Address: {{employee.address}}+{{employee.street}}</td>
+              <td style='border:1px solid black'>Address: {{employee.address}} {{employee.street}}</td>
             <td style='border:1px solid black'>City: {{employee.city}}</td>
             <td style='border:1px solid black'>zipcode:{{employee.areaCode}}</td>
             <td style='border:1px solid black'>province:{{employee.state}}</td></tr>
@@ -73,7 +76,7 @@ corresponding box. I declare to know the conditions of use, as well as the curre
                 <tbody>
                   {{#each ppe}}
                     <tr>
-                        <td>1</td>
+                        <td>{{this.id}}</td>
                     <td>{{this.name}}</td>
                     <td></td>
                     <td></td>

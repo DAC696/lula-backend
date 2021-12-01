@@ -310,17 +310,26 @@ const exportPpe = async (req, res, next) => {
 
     const uniquePpe = [...new Set(result)];
         
-    const newArrayPPe = uniquePpe.map(p =>
+    const newArrayPPe = uniquePpe.map((p,i) =>
     {
     
-      return { name: p };
+      return { name: p,id:i+1 };
     })
-    
+    console.log(newArrayPPe);
     const html = fs.readFileSync(__dirname+'/pdf.html', 'utf8');
            const options = {
   format: 'A3',
   orientation: 'portrait',
-  border: '10mm',
+             border: '10mm',
+   footer: {
+            height: "28mm",
+            contents: {
+                first: '<div style="text-align: center;"><span style="color: #444;">Reviewed: Designated Person (DP)</span><br /><span>Approved: CEO</span ><br /><span>page {{page}} of {{pages}}</span>',
+                2: '<div style="text-align: center;"><span style="color: #444;">Reviewed: Designated Person (DP)</span><br /><span>Approved: CEO</span ><br /><span>page {{page}} of {{pages}}</span>', // Any page number is working. 1-based index
+                default: '<div style="text-align: center;"><span style="color: #444;">Reviewed: Designated Person (DP)</span><br /><span>Approved: CEO</span ><br /><span>page {{page}} of {{pages}}</span>',
+                last: 'Last Page'
+            }
+        }
 };
     const document = {
       html: html,
