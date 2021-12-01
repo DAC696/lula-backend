@@ -4,10 +4,10 @@ const mongoose = require("mongoose");
 // creating appraisal schema to be stored in db
 const appraisalSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    appraisalTitle: {
-        type: String,
-        trim: true
-    },
+    // appraisalTitle: {
+    //     type: String,
+    //     trim: true
+    // },
     appraisalFirstName: {
         type: String,
         trim: true

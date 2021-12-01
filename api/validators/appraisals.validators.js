@@ -18,17 +18,17 @@ const addAppraisalsValidator = (req, res, next) => {
 
         }
 
-        const { appraisalTitle, appraisalFirstName, appraisalLastName, vessel, startDate, endDate, position, appraisalType, appraisalDetails } = req.body;
+        const {  appraisalFirstName, appraisalLastName, vessel, startDate, endDate, position, appraisalType, appraisalDetails } = req.body;
 
-        if (isEmpty(appraisalTitle)) {
+        // if (isEmpty(appraisalTitle)) {
 
-            errors.appraisalTitle = 'Appraisal Title is required.';
+        //     errors.appraisalTitle = 'Appraisal Title is required.';
 
-        } else if (!isString(appraisalTitle)) {
+        // } else if (!isString(appraisalTitle)) {
 
-            errors.appraisalTitle = 'Appraisal Title is not valid string.';
+        //     errors.appraisalTitle = 'Appraisal Title is not valid string.';
 
-        }
+        // }
 
         if (isEmpty(appraisalFirstName)) {
 

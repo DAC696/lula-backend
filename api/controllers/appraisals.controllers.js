@@ -31,13 +31,13 @@ const addAppraisal = async (req, res, next) => {
 
     }
 
-    const { appraisalTitle, appraisalFirstName, appraisalLastName, vessel, startDate, endDate, position, appraisalType, appraisalDetails } = req.body;
+    const {  appraisalFirstName, appraisalLastName, vessel, startDate, endDate, position, appraisalType, appraisalDetails } = req.body;
 
     //prepare object for storing appraisal in db
 
     const prepObj = {
       _id: mongoose.Types.ObjectId(),
-      appraisalTitle,
+      // appraisalTitle,
       appraisalFirstName,
       appraisalLastName,
       vessel,
