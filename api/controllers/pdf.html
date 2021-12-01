@@ -8,10 +8,90 @@
           }
           th,
           td {
-            border: 1px solid #000000;
+            /* border: 1px solid #000000; */
             padding: 10px;
           }
-          ul {
+         
+        </style>
+    <meta charset="UTF-8">
+    <title>PPE Report</title>
+</head>
+<body>
+    <table >
+          <tbody>
+              <!-- {{employee}} -->
+              <tr style='border: 1px solid black;'>
+           <td >  SUPPLY RECORD OF PERSONAL PROTECTION EQUIPMENT (PPE)</td>
+           <td></td>
+           <td></td>
+           <td></td>
+            </tr>
+            <tr>
+                <td style='border:1px solid black'>Company name: {{employee._departmentId.departmentName}}</td>
+                <td style='border:1px solid black'>tax identifier</td>
+                <td style='border:1px solid black; border-right:none'>32483247983427</td>
+      <td style='border:1px solid black; border-left:none'></td>
+            </tr>
+            <tr>
+              <td style='border:1px solid black'>Address: {{employee.address}}+{{employee.street}}</td>
+            <td style='border:1px solid black'>City: {{employee.city}}</td>
+            <td style='border:1px solid black'>zipcode:{{employee.areaCode}}</td>
+            <td style='border:1px solid black'>province:{{employee.state}}</td></tr>
+            <tr>
+              <td style='border:1px solid black'>Name: {{employee.firstName}} {{employee.lastName}}</td>
+            <td style='border:1px solid black'>ID/Worker: {{employee.empId}}</td>
+            <td style='border:1px solid black;border-right: none;'>Position</td>
+            <td style='border:1px solid black;border-left: none;'></td>
+            </tr>
+           <tr style='border:1px solid black'> 
+             <td style='border:1px solid black'>{{employee._roleId.roleName}}</td>
+             <td style='border:1px solid black; border-right: none;'>PPe for position</td>
+            <td ></td>
+            <td style='border:1px solid black;border-left: none;'></td>
+            </tr>
+           <tr>
+             <td style='border:1px solid black'>The signing worker agrees to use personal or collective protective equipment and to observe their approppriate maintainance procedures. I hereby
+certify that I have been given the PERSONAL PROTECTION EQUIPMENT listed below, which I withdraw accordingly, stating my signature in the
+corresponding box. I declare to know the conditions of use, as well as the current legal provisions that make its use mandatory.</td>
+<td style='border-bottom:1px solid black'></td>
+<td style='border-top:1px solid black;border-bottom:1px solid black'></td>
+<td style='border:1px solid black;border-left: none;'></td>
+</tr>
+          
+        </tbody>
+        <table border='1' cellspacing='0' cellpadding=''>
+                <thead>
+                    <td></td>
+                    <td>Product</td>
+                    <td>Type/Model</td>
+                    <td>Brand</td>
+                <td>Holds Certification</td>
+                <td>Number</td>
+                <td>Hands in Certificate</td>
+                <td>Workers Signature</td>
+                </thead>
+                <tbody>
+                  {{#each ppe}}
+                    <tr>
+                        <td>1</td>
+                    <td>{{this.name}}</td>
+                    <td></td>
+                    <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+    </table>
+</body>
+</html>
+
+  
+ <!-- ul {
             margin: 0px;
             padding-left: 14px;
           }
@@ -24,63 +104,5 @@
           }
           ul li:last-child {
             padding-bottom: 0px;
-          }
-        </style>
-    <meta charset="UTF-8">
-    <title>PPE Report</title>
-</head>
-<body>
-    <table>
-          <tbody>
-              <!-- {{employee}} -->
-              <tr>
-           <th role='row'>  SUPPLY RECORD OF PERSONAL PROTECTION EQUIPMENT (PPE)</th>
-            </tr>
-            <tr>
-                <td >Company name: {{employee._departmentId.departmentName}}</td>
-                <td>tax identifier</td>
-                <td>32483247983427</td>
-            </tr>
-            <tr><td>Address: {{employee.address}}+{{employee.street}}</td>
-            <td>City: {{employee.city}}</td><td>zipcode:{{employee.areaCode}}</td>
-            <td>province:{{employee.state}}</td></tr>
-            <tr><td>Name: {{employee.firstName}}+{{employee.lastName}}</td>
-            <td>ID/Worker: {{employee.empId}}</td><td>Position</td>
-            </tr>
-           <tr> <td>{{employee._roleId.roleName}}</td><td>PPe for position</td></tr>
-           <tr><td>The signing worker agrees to use personal or collective protective equipment and to observe their approppriate maintainance procedures. I hereby
-certify that I have been given the PERSONAL PROTECTION EQUIPMENT listed below, which I withdraw accordingly, stating my signature in the
-corresponding box. I declare to know the conditions of use, as well as the current legal provisions that make its use mandatory.</td></tr>
-          
-        </tbody>
-        <table>
-                <thead>
-                    <td></td>
-                    <td>Product</td>
-                    <td>Type/Model</td>
-                    <td>Brand</td>
-                <td>Holds Certification</td>
-                <td>Number</td>
-                <td>Hands in Certificate</td>
-                <td>Workers Signature</td>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                    </tr>
-                </tbody>
-            </table>
-
-    </table>
-</body>
-</html>
-
-  
+          } -->
     

@@ -299,8 +299,23 @@ const exportPpe = async (req, res, next) => {
       })
 
     };
-    // const newArray = [];
-    // newArray.push(employee);
+    const ppes = await PpeModel.enlistAllPpess(employeeId);
+    let result = [];
+    const onlyPpes = ppes.map((p, i, ppes) =>
+    {
+     
+      let newArray = p.ppe.split(',');
+      result = result.concat(newArray);
+    });
+
+    const uniquePpe = [...new Set(result)];
+        
+    const newArrayPPe = uniquePpe.map(p =>
+    {
+    
+      return { name: p };
+    })
+    
     const html = fs.readFileSync(__dirname+'/pdf.html', 'utf8');
            const options = {
   format: 'A3',
@@ -311,6 +326,7 @@ const exportPpe = async (req, res, next) => {
       html: html,
       data: {
         employee: employee,
+        ppe:newArrayPPe
       },
       path: __dirname+'/ppe.pdf',
       type: "",
@@ -348,6 +364,7 @@ const exportPpe = async (req, res, next) => {
 
     }).catch(err =>
     {
+      console.log(err);
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         success: false,
         hasError: true,
