@@ -322,9 +322,9 @@ const exportPpe = async (req, res, next) => {
   orientation: 'portrait',
              border: '10mm',
    footer: {
-            height: "28mm",
+            height: "40mm",
             contents: {
-                first: '<div style="text-align: center;"><span style="color: #444;">Reviewed: Designated Person (DP)</span><br /><span>Approved: CEO</span ><br /><span>page {{page}} of {{pages}}</span>',
+                first: '<div style="text-align: center;"><span>Note: MGS</span><br /><span>Distribution: Original: Company / Copy: Digita</span><br /><span>FORM SM-05 - ORIGINAL DOCUMENT</span><br /><span>Revision No.: 9</span><br /><span>Date: 01/14/2021</span><br /><span style="color: #444;">Reviewed: Designated Person (DP)</span><br /><span>Approved: CEO</span ><br /><span>page {{page}} of {{pages}}</span>',
                 2: '<div style="text-align: center;"><span style="color: #444;">Reviewed: Designated Person (DP)</span><br /><span>Approved: CEO</span ><br /><span>page {{page}} of {{pages}}</span>', // Any page number is working. 1-based index
                 default: '<div style="text-align: center;"><span style="color: #444;">Reviewed: Designated Person (DP)</span><br /><span>Approved: CEO</span ><br /><span>page {{page}} of {{pages}}</span>',
                 last: 'Last Page'

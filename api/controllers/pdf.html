@@ -19,20 +19,24 @@
     <title>PPE Report</title>
 </head>
 <body>
+  <div style="display:flex">
+    <span style="display:inline-block;height:15mm !important;width:60mm !important;background-color:purple; color:white;margin-left:20px;">SISTEMA DE GESTIÓN DE SEGURIDAD</span>
   <div style="text-align: center;">
   <img style=" width:30mm" src="https://firebasestorage.googleapis.com/v0/b/acies-cfc88.appspot.com/o/logo.jpeg?alt=media&token=42424218-46ab-48e5-9b0c-ee3888985c85" />
-  </div>  
+  </div>
+  </div>
+    
   <table style="margin-top:20px;" >
           <tbody>
               <!-- {{employee}} -->
-              <tr style='border: 1px solid black;'>
-           <td >  SUPPLY RECORD OF PERSONAL PROTECTION EQUIPMENT (PPE)</td>
+              <tr style='border: 1px solid black;background-color:grey;'>
+           <td >  SUPPLY RECORD OF PERSONAL PROTECTION EQUIPMENT (PPE)<br />National Law No. 19,587 and Regulatory Dec., Res. 299/11</td>
            <td></td>
            <td></td>
            <td></td>
             </tr>
             <tr>
-                <td style='border:1px solid black'>Company name: {{employee._departmentId.departmentName}}</td>
+                <td style='border:1px solid black'>Company name: ZAPOR SA </td>
                 <td style='border:1px solid black'>tax identifier</td>
                 <td style='border:1px solid black; border-right:none'>32483247983427</td>
       <td style='border:1px solid black; border-left:none'></td>
@@ -45,14 +49,12 @@
             <tr>
               <td style='border:1px solid black'>Name: {{employee.firstName}} {{employee.lastName}}</td>
             <td style='border:1px solid black'>ID/Worker: {{employee.empId}}</td>
-            <td style='border:1px solid black;border-right: none;'>Position</td>
-            <td style='border:1px solid black;border-left: none;'></td>
+            <td colspan="2" style='border:1px solid black;'>Position {{employee._roleId.roleName}}</td>
             </tr>
            <tr style='border:1px solid black'> 
-             <td style='border:1px solid black'>{{employee._roleId.roleName}}</td>
-             <td style='border:1px solid black; border-right: none;'>PPe for position</td>
-            <td ></td>
-            <td style='border:1px solid black;border-left: none;'></td>
+             <td style='border:1px solid black'>Brief description of the position: </td>
+             <td colspan="3" style='border:1px solid black; border-right: none;'>PPE for the position:  SEE DETAIL SGS  (SAFETY MANAGEMENT
+SYSTEM)</td>
             </tr>
            <tr>
              <td style='border:1px solid black'>The signing worker agrees to use personal or collective protective equipment and to observe their approppriate maintainance procedures. I hereby
@@ -64,28 +66,28 @@ corresponding box. I declare to know the conditions of use, as well as the curre
 </tr>
           
         </tbody>
-        <table border='1' cellspacing='0' cellpadding=''>
-                <thead>
-                    <td></td>
-                    <td>Product</td>
-                    <td>Type/Model</td>
-                    <td>Brand</td>
-                <td>Holds Certification</td>
-                <td>Number</td>
-                <td>Hands in Certificate</td>
-                <td>Workers Signature</td>
+        <table >
+                <thead style='background-color:grey'>
+                    <td style='border: 1px solid black'></td>
+                    <td style='border: 1px solid black'>Product</td>
+                    <td style='border: 1px solid black'>Type/Model</td>
+                    <td style='border: 1px solid black'>Brand</td>
+                <td style='border: 1px solid black'>Holds Certification</td>
+                <td style='border: 1px solid black'>Number</td>
+                <td style='border: 1px solid black'>Hands in Certificate</td>
+                <td style='border: 1px solid black'>Workers Signature</td>
                 </thead>
                 <tbody>
                   {{#each ppe}}
                     <tr>
-                        <td>{{this.id}}</td>
-                    <td>{{this.name}}</td>
-                    <td></td>
-                    <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                        <td style='background-color:grey;border: 1px solid black''>{{this.id}}</td>
+                    <td style='border: 1px solid black'>{{this.name}}</td>
+                    <td style='border: 1px solid black'></td>
+                    <td style='border: 1px solid black'></td>
+                <td style='border: 1px solid black'></td>
+                <td style='border: 1px solid black'></td>
+                <td style='border: 1px solid black'></td>
+                <td style='border: 1px solid black'></td>
                     </tr>
                     {{/each}}
                 </tbody>

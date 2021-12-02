@@ -151,25 +151,110 @@ const enlistAllSalaryCalculatorsByType = async (salaryCalculators) =>
             {
                 return e._id;
             })
-            const salaryCalcualtorObject = await SalaryCalculator.find({ _employeeId: { $in: employeesIds } })
+            const salaryCalculatorObject = await SalaryCalculator.find({ _employeeId: { $in: employeesIds }, startDate: { $gte: moment(salaryCalculators.fromDate) }, endDate: { $lt: moment(salaryCalculators.toDate) }, })
                 .populate({ path: '_employeeId', select: "-_id firstName lastName", model: 'Employee', populate: { path: '_roleId', select: 'roleName -_id', model: 'Role' } })
                 .populate({path:'_employeeId',select: "-_id firstName lastName", model: 'Employee',populate:{path:'_locationId',select:'locName -_id',model:'Location'}})
                 .lean();
-            return salaryCalcualtorObject
+            let seen = new Set(salaryCalculatorObject.map(v => v.code.name));
+            let codeArray = [];
+            seen.forEach(v => codeArray.push(v));
+            console.log(codeArray);
+            let total = [];
+            codeArray.map(c => total.push({ days: 0, flag: false }));
+            
+            let newArray = [];
+            for (var i = 0; i < codeArray.length; i++)
+            {
+                for (var j = 0; j < salaryCalculatorObject.length; j++)
+                {
+                    if (codeArray[i] === salaryCalculatorObject[j].code.name)
+                        if (!total[i].flag)
+                        {
+                            total[i].days = total[i].days + salaryCalculatorObject[j].dates.length;
+                            let data = { ...salaryCalculatorObject[j], total_days:total[i].days };
+                            total[i].flag=true;
+                            newArray.push(data);
+                        } else
+                        {
+                            total[i].days = total[i].days + salaryCalculatorObject[j].dates.length;
+                            let data = { ...newArray[i], total_days: total[i].days };
+                            newArray[i] = data;
+                        }
+                }
+            }
+            
+            return newArray;
         } else if (salaryCalculators.type == 'date')
         {
             const salaryCalculatorObject = await SalaryCalculator.find({ _employeeId: salaryCalculators.employId,startDate:{$gte:moment(salaryCalculators.fromDate)},endDate:{$lt:moment(salaryCalculators.toDate)}, })
                 .populate({ path: '_employeeId', select: "-_id firstName lastName", model: 'Employee', populate: { path: '_roleId', select: 'roleName -_id', model: 'Role' } })
                 .populate({path:'_employeeId',select: "-_id firstName lastName", model: 'Employee',populate:{path:'_locationId',select:'locName -_id',model:'Location'}})
                 .lean();
-            return salaryCalculatorObject;
+            console.log(salaryCalculatorObject);
+            let seen = new Set(salaryCalculatorObject.map(v => v.code.name));
+            let codeArray = [];
+            seen.forEach(v => codeArray.push(v));
+            console.log(codeArray);
+            let total = [];
+            codeArray.map(c => total.push({ days: 0, flag: false }));
+            
+            let newArray = [];
+            for (var i = 0; i < codeArray.length; i++)
+            {
+                for (var j = 0; j < salaryCalculatorObject.length; j++)
+                {
+                    if (codeArray[i] === salaryCalculatorObject[j].code.name)
+                        if (!total[i].flag)
+                        {
+                            total[i].days = total[i].days + salaryCalculatorObject[j].dates.length;
+                            let data = { ...salaryCalculatorObject[j], total_days:total[i].days };
+                            total[i].flag=true;
+                            newArray.push(data);
+                        } else
+                        {
+                            total[i].days = total[i].days + salaryCalculatorObject[j].dates.length;
+                            let data = { ...newArray[i], total_days: total[i].days };
+                            newArray[i] = data;
+                        }
+                }
+            }
+            
+            return newArray;
         } else if (salaryCalculators.type == 'all')
         {
-            const salaryCalculatorObject = await SalaryCalculator.find()
+            const salaryCalculatorObject = await SalaryCalculator.find({ startDate: { $gte: moment(salaryCalculators.fromDate) }, endDate: { $lt: moment(salaryCalculators.toDate) }, })
                 .populate({ path: '_employeeId', select: "-_id firstName lastName", model: 'Employee', populate: { path: '_roleId', select: 'roleName -_id', model: 'Role' } })
                 .populate({path:'_employeeId',select: "-_id firstName lastName", model: 'Employee',populate:{path:'_locationId',select:'locName -_id',model:'Location'}})
                 .lean();
-            return salaryCalculatorObject
+            let seen = new Set(salaryCalculatorObject.map(v => v.code.name));
+            let codeArray = [];
+            seen.forEach(v => codeArray.push(v));
+            console.log(codeArray);
+            let total = [];
+            codeArray.map(c => total.push({ days: 0, flag: false }));
+            
+            let newArray = [];
+            for (var i = 0; i < codeArray.length; i++)
+            {
+                for (var j = 0; j < salaryCalculatorObject.length; j++)
+                {
+                    if (codeArray[i] === salaryCalculatorObject[j].code.name)
+                        if (!total[i].flag)
+                        {
+                            total[i].days = total[i].days + salaryCalculatorObject[j].dates.length;
+                            let data = { ...salaryCalculatorObject[j], total_days:total[i].days };
+                            total[i].flag=true;
+                            newArray.push(data);
+                        } else
+                        {
+                            total[i].days = total[i].days + salaryCalculatorObject[j].dates.length;
+                            let data = { ...newArray[i], total_days: total[i].days };
+                            newArray[i] = data;
+                        }
+                }
+            }
+            
+            return newArray;
     }
     }catch (error) {
         console.log(error);
