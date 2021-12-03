@@ -16,13 +16,13 @@ const appraisalSchema = mongoose.Schema({
         type: String,
         trim: true
     },
-    vessel: {
-        type: String,
-        trim: true
+   _locationId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Location'
     },
-    position: {
-        type: String,
-        trim: true
+    _roleId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Role'
     },
     startDate: {
         type: String,

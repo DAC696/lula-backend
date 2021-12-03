@@ -18,7 +18,7 @@ const addAppraisalsValidator = (req, res, next) => {
 
         }
 
-        const {  appraisalFirstName, appraisalLastName, vessel, startDate, endDate, position, appraisalType, appraisalDetails } = req.body;
+        const {  startDate, endDate, appraisalType, appraisalDetails } = req.body;
 
         // if (isEmpty(appraisalTitle)) {
 
@@ -30,55 +30,55 @@ const addAppraisalsValidator = (req, res, next) => {
 
         // }
 
-        if (isEmpty(appraisalFirstName)) {
+        // if (isEmpty(appraisalFirstName)) {
 
-            errors.appraisalFirstName = 'Appraisal First Name is required.';
+        //     errors.appraisalFirstName = 'Appraisal First Name is required.';
 
-        } else if (!isString(appraisalFirstName)) {
+        // } else if (!isString(appraisalFirstName)) {
 
-            errors.appraisalFirstName = 'Appraisal First Name is not valid string.';
+        //     errors.appraisalFirstName = 'Appraisal First Name is not valid string.';
 
-        }
+        // }
 
-        if (isEmpty(appraisalLastName)) {
+        // if (isEmpty(appraisalLastName)) {
 
-            errors.appraisalLastName = 'Appraisal Last Name is required.';
+        //     errors.appraisalLastName = 'Appraisal Last Name is required.';
 
-        } else if (!isString(appraisalLastName)) {
+        // } else if (!isString(appraisalLastName)) {
 
-            errors.appraisalLastName = 'Appraisal Last Name is not valid string.';
+        //     errors.appraisalLastName = 'Appraisal Last Name is not valid string.';
 
-        }
+        // }
 
-        if (isEmpty(vessel)) {
+        // if (isEmpty(vessel)) {
 
-            errors.vessel = 'Appraisal vessel is required.';
+        //     errors.vessel = 'Appraisal vessel is required.';
 
-        } else if (!isString(vessel)) {
+        // } else if (!isString(vessel)) {
 
-            errors.vessel = 'Appraisal vessel is not valid string.';
+        //     errors.vessel = 'Appraisal vessel is not valid string.';
 
-        }
+        // }
 
-        if (isEmpty(position)) {
+        // if (isEmpty(position)) {
 
-            errors.position = 'Appraisal position is required.';
+        //     errors.position = 'Appraisal position is required.';
 
-        } else if (!isString(position)) {
+        // } else if (!isString(position)) {
 
-            errors.position = 'Appraisal position is not valid string.';
+        //     errors.position = 'Appraisal position is not valid string.';
 
-        }
+        // }
 
-        if (isEmpty(vessel)) {
+        // if (isEmpty(vessel)) {
 
-            errors.vessel = 'Appraisal vessel is required.';
+        //     errors.vessel = 'Appraisal vessel is required.';
 
-        } else if (!isString(vessel)) {
+        // } else if (!isString(vessel)) {
 
-            errors.vessel = 'Appraisal vessel is not valid string.';
+        //     errors.vessel = 'Appraisal vessel is not valid string.';
 
-        }
+        // }
 
         if (isEmpty(startDate)) {
 
