@@ -146,19 +146,19 @@ const enlistAllSalaryCalculatorsByType = async (salaryCalculators) =>
         {
             const location = await Location.findById(salaryCalculators.locId);
             const employess = await Employee.find({ _locationId: location._id });
-            // console.log(employess);
-            const employeesIds = employess.map(e =>
-            {
-                return e._id;
-            })
-            const salaryCalculatorObject = await SalaryCalculator.find({ _employeeId: { $in: employeesIds }, startDate: { $gte: moment(salaryCalculators.fromDate) }, endDate: { $lt: moment(salaryCalculators.toDate) }, })
+            let employeeArray = [];
+            for (var k = 0; k < employess.length; k++){
+                const salaryCalculatorObject = await SalaryCalculator.find({ _employeeId:  employess[k]._id , startDate: { $gte: moment(salaryCalculators.fromDate) }, endDate: { $lt: moment(salaryCalculators.toDate) }, })
                 .populate({ path: '_employeeId', select: "-_id firstName lastName", model: 'Employee', populate: { path: '_roleId', select: 'roleName -_id', model: 'Role' } })
                 .populate({path:'_employeeId',select: "-_id firstName lastName", model: 'Employee',populate:{path:'_locationId',select:'locName -_id',model:'Location'}})
                 .lean();
+                // const salaryCalculatorObject = await SalaryCalculator.find({ _employeeId: { $in: employeesIds }, startDate: { $gte: moment(salaryCalculators.fromDate) }, endDate: { $lt: moment(salaryCalculators.toDate) }, })
+                // .populate({ path: '_employeeId', select: "-_id firstName lastName", model: 'Employee', populate: { path: '_roleId', select: 'roleName -_id', model: 'Role' } })
+                // .populate({path:'_employeeId',select: "-_id firstName lastName", model: 'Employee',populate:{path:'_locationId',select:'locName -_id',model:'Location'}})
+                // .lean();
             let seen = new Set(salaryCalculatorObject.map(v => v.code.name));
             let codeArray = [];
             seen.forEach(v => codeArray.push(v));
-            console.log(codeArray);
             let total = [];
             codeArray.map(c => total.push({ days: 0, flag: false }));
             
@@ -181,9 +181,15 @@ const enlistAllSalaryCalculatorsByType = async (salaryCalculators) =>
                             newArray[i] = data;
                         }
                 }
-            }
             
-            return newArray;
+                }
+                if (newArray.length > 0) {
+                   let data = { employee: employess[k], salary:newArray };
+                employeeArray.push(data);
+            } 
+                }
+            return employeeArray;
+            
         } else if (salaryCalculators.type == 'date')
         {
             const salaryCalculatorObject = await SalaryCalculator.find({ _employeeId: salaryCalculators.employId,startDate:{$gte:moment(salaryCalculators.fromDate)},endDate:{$lt:moment(salaryCalculators.toDate)}, })
@@ -222,14 +228,25 @@ const enlistAllSalaryCalculatorsByType = async (salaryCalculators) =>
             return newArray;
         } else if (salaryCalculators.type == 'all')
         {
-            const salaryCalculatorObject = await SalaryCalculator.find({ startDate: { $gte: moment(salaryCalculators.fromDate) }, endDate: { $lt: moment(salaryCalculators.toDate) }, })
+             const employess = await Employee.find();
+            // console.log(employess);
+            const employeesIds = employess.map(e =>
+            {
+                return e._id;
+            })
+            let employeeArray = [];
+            for (var k = 0; k < employeesIds.length; k++){
+                const salaryCalculatorObject = await SalaryCalculator.find({ _employeeId:  employeesIds[k] , startDate: { $gte: moment(salaryCalculators.fromDate) }, endDate: { $lt: moment(salaryCalculators.toDate) }, })
                 .populate({ path: '_employeeId', select: "-_id firstName lastName", model: 'Employee', populate: { path: '_roleId', select: 'roleName -_id', model: 'Role' } })
                 .populate({path:'_employeeId',select: "-_id firstName lastName", model: 'Employee',populate:{path:'_locationId',select:'locName -_id',model:'Location'}})
                 .lean();
+                // const salaryCalculatorObject = await SalaryCalculator.find({ _employeeId: { $in: employeesIds }, startDate: { $gte: moment(salaryCalculators.fromDate) }, endDate: { $lt: moment(salaryCalculators.toDate) }, })
+                // .populate({ path: '_employeeId', select: "-_id firstName lastName", model: 'Employee', populate: { path: '_roleId', select: 'roleName -_id', model: 'Role' } })
+                // .populate({path:'_employeeId',select: "-_id firstName lastName", model: 'Employee',populate:{path:'_locationId',select:'locName -_id',model:'Location'}})
+                // .lean();
             let seen = new Set(salaryCalculatorObject.map(v => v.code.name));
             let codeArray = [];
             seen.forEach(v => codeArray.push(v));
-            console.log(codeArray);
             let total = [];
             codeArray.map(c => total.push({ days: 0, flag: false }));
             
@@ -252,9 +269,14 @@ const enlistAllSalaryCalculatorsByType = async (salaryCalculators) =>
                             newArray[i] = data;
                         }
                 }
-            }
             
-            return newArray;
+                }
+                if (newArray.length > 0) {
+                   let data = { employee: employeesIds[k], salary:newArray };
+                employeeArray.push(data);
+            } 
+                }
+            return employeeArray;
     }
     }catch (error) {
         console.log(error);
