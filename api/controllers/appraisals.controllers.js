@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { isEmpty } = require("../../utils/custom.validator")
 const AppraisalModel = require("../models/appraisals.models");
 const EmployeeModel = require("../models/employees.models");
+const LocationModel = require("../models/locations.models");
 const { StatusCodes } = require("http-status-codes");
 
 /**
@@ -15,8 +16,10 @@ const addAppraisal = async (req, res, next) => {
     const user = req.userData;
 
     const { employeeId } = req.params;
+       const { locId, startDate, endDate, appraisalType, appraisalDetails } = req.body;
 
     const employee = await EmployeeModel.getEmployeeById(employeeId);
+    const location = await LocationModel.getLocationByCustomLocId(locId)
 
 
     if (isEmpty(employee)) {
@@ -30,8 +33,18 @@ const addAppraisal = async (req, res, next) => {
       })
 
     }
+if (isEmpty(location)) {
 
-    const {  startDate, endDate, appraisalType, appraisalDetails } = req.body;
+      return res.status(StatusCodes.NOT_FOUND).json({
+
+        success: false,
+        hasError: true,
+        error: ["Location Not found of this id"]
+
+      })
+
+    }
+ 
 
     //prepare object for storing appraisal in db
 
@@ -40,7 +53,7 @@ const addAppraisal = async (req, res, next) => {
       // appraisalTitle,
       appraisalFirstName:employee.firstName,
       appraisalLastName:employee.lastName,
-      _locationId:employee._locationId,
+      _locationId:location._id,
       startDate,
       endDate,
       _roleId:employee._roleId,
