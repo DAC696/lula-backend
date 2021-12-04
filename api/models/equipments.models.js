@@ -115,14 +115,45 @@ const enlistAllEquipmentsByLocationId = async (locationId) => {
     }
 }
 
+const enlistLastEquipmentsByLocationId = async(locationId) => {
+ 
+    try {
+
+        const equipments = await Equipment.find({ _locationId: locationId })
+            
+            .populate('_locationId')
+            .lean().sort({ $natural: -1 }).limit(1);
+        
+        return equipments;
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const deleteManyById = async (locationId) => {
+    
+try{
+        const trainings = await Equipment.deleteMany({ _locationId: locationId })
+
+        return trainings
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+
 module.exports = {
 
     addEquipment,
     getEquipmentById,
     updateEquipmentById,
     deleteEquipmentById,
+    deleteManyById,
     enlistAllEquipments,
-    enlistAllEquipmentsByLocationId
+    enlistAllEquipmentsByLocationId,
+    enlistLastEquipmentsByLocationId
 
 
 }

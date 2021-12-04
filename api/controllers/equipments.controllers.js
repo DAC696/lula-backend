@@ -37,7 +37,7 @@ const addEquipment = async (req, res, next) => {
     } = req.body
 
     const location = await LocationModel.getLocationById(locationId);
-    const allLocations = await EquipmentModel.enlistAllEquipmentsByLocationId(locationId);
+    const allLocations = await EquipmentModel.enlistLastEquipmentsByLocationId(locationId);
     if (isEmpty(location)) {
 
       return res.status(StatusCodes.NOT_FOUND).json({
@@ -48,13 +48,25 @@ const addEquipment = async (req, res, next) => {
 
       })
     }
-    const reference = `${location.locId}-0000${allLocations.length}`;
+    let referenceFormat;
+    if (allLocations.length > 0) {
+      const previousReference = allLocations[0].reference.split('-')[1];
+      const IncrementReference = Number(previousReference) + 1;
+      const referenceString = IncrementReference.toString().padStart(5, '0');
+      referenceFormat=`${location.locId}-${referenceString}`;
+    } else {
+      referenceFormat=`${location.locId}-00001`;
+    }
+    
+    console.log(referenceFormat);
+    
+    // const reference = `${location.locId}-0000${allLocations.length}`;
     //prepare object for storing equipment in db
 
     const prepObj = {
       _id: mongoose.Types.ObjectId(),
       systems,
-      reference,
+      reference:referenceFormat,
       equipmentName,
       manufacturer,
       model,
@@ -414,12 +426,41 @@ const enlistAllEquipmentsByLocationId = async (req, res, next) => {
 
   }
 };
+const deleteManyEquipment = async (req, res, next) => {
+  try {
+
+    const {locationId} = req.params 
+    const equipments = await EquipmentModel.deleteManyById(locationId);
+ 
+    return res.status(StatusCodes.OK).json({
+
+      success: true,
+      hasError: false,
+      total: equipments ? equipments.length : 0,
+      payload: equipments
+
+    })
+
+  } catch (error) {
+    console.log(error);
+
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+
+      success: false,
+      hasError: true,
+      error: ["Internal Server Error"]
+
+    })
+
+  }
+}
 
 module.exports = {
 
   addEquipment,
   updateEquipmentById,
   deleteEquipmentById,
+  deleteManyEquipment,
   getEquipmentById,
   enlistAllEquipments,
   enlistAllEquipmentsByLocationId

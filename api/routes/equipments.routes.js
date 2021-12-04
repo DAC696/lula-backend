@@ -30,6 +30,8 @@ router.post("/update/:equipmentId", checkAuth, EquipmentValidator.updateEquipmen
 //delte equipment by id
 router.delete("/delete/:equipmentId", checkAuth, EquipmentValidator.getEquipmentByIdValidator, EquipmentController.deleteEquipmentById);
 
+router.delete("/deleteMany/:locationId",  EquipmentController.deleteManyEquipment);
+
 //get All details
 router.get("/list", checkAuth, EquipmentController.enlistAllEquipments)
 
