@@ -121,7 +121,8 @@ const enlistAllAppraisals = async (employeeId = undefined) => {
                         path: '_departmentId'
                     },
                     select: "-profilePhoto"
-                })
+                }).populate('_locationId')
+                .populate('_roleId')
                 .lean()
 
             console.log(appraisals[0]._employeeId)
