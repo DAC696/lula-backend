@@ -6,7 +6,7 @@ const addCourseValidator = (req, res, next) => {
 
         const errors = {};
 
-        let { courseName, courseType, isMandatory, validDate, expiryDate } = req.body;
+        let { courseName, courseType, isMandatory,} = req.body;
 
         if (isEmpty(courseName)) {
 
@@ -18,25 +18,25 @@ const addCourseValidator = (req, res, next) => {
 
         }
 
-        if (isEmpty(validDate)) {
+        // if (isEmpty(validDate)) {
 
-            errors.validDate = 'Valid Date is required.';
+        //     errors.validDate = 'Valid Date is required.';
 
-        } else if (!isString(validDate)) {
+        // } else if (!isString(validDate)) {
 
-            errors.validDate = 'Valid Date is not valid string.';
+        //     errors.validDate = 'Valid Date is not valid string.';
 
-        }
+        // }
 
-        if (isEmpty(expiryDate)) {
+        // if (isEmpty(expiryDate)) {
 
-            errors.expiryDate = 'Expiry Date is required.';
+        //     errors.expiryDate = 'Expiry Date is required.';
 
-        } else if (!isString(expiryDate)) {
+        // } else if (!isString(expiryDate)) {
 
-            errors.expiryDate = 'Expiry Date is not valid string.';
+        //     errors.expiryDate = 'Expiry Date is not valid string.';
 
-        }
+        // }
 
         if (isEmpty(courseType)) {
 
@@ -157,7 +157,7 @@ const updateCourseByIdValidator = (req, res, next) => {
 
         }
 
-        let { courseName, courseType, isMandatory, validDate, expiryDate } = req.body;
+        let { courseName, courseType, isMandatory} = req.body;
 
         if (courseName && !isString(courseName)) {
 
@@ -165,17 +165,17 @@ const updateCourseByIdValidator = (req, res, next) => {
 
         }
 
-        if (validDate && !isString(validDate)) {
+        // if (validDate && !isString(validDate)) {
 
-            errors.validDate = 'Valid Date is not valid string.';
+        //     errors.validDate = 'Valid Date is not valid string.';
 
-        }
+        // }
 
-        if (expiryDate && !isString(expiryDate)) {
+        // if (expiryDate && !isString(expiryDate)) {
 
-            errors.expiryDate = 'Expiry Date is not valid string.';
+        //     errors.expiryDate = 'Expiry Date is not valid string.';
 
-        }
+        // }
 
         if (courseType && !isString(courseType)) {
 

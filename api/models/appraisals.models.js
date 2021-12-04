@@ -92,6 +92,8 @@ const enlistAllAppraisals = async (employeeId = undefined) => {
             const appraisals = await Appraisal.find({ _employeeId: employeeId })
                 .populate('_employeeId', '-profilePhoto')
                 .populate('_created_by', '-password')
+                .populate('_locationId')
+                .populate('_roleId')
                 .lean()
 
             return appraisals;

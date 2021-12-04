@@ -12,6 +12,14 @@ const trainingSchema = mongoose.Schema({
         type: String,
         trim: true
     },
+       validDate: {
+        type: String,
+        trim: true
+    },
+    expiryDate: {
+        type: String,
+        trim: true
+    },
     _employeeId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Employee'

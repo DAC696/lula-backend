@@ -15,14 +15,14 @@ const courseSchema = mongoose.Schema({
     isMandatory: {
         type: Boolean
     },
-    validDate: {
-        type: String,
-        trim: true
-    },
-    expiryDate: {
-        type: String,
-        trim: true
-    },
+    // validDate: {
+    //     type: String,
+    //     trim: true
+    // },
+    // expiryDate: {
+    //     type: String,
+    //     trim: true
+    // },
     _created_by: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

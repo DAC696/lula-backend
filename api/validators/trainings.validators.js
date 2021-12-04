@@ -8,7 +8,7 @@ const addTrainingValidator = (req, res, next) => {
 
         const { employeeId } = req.params;
 
-        const { courseId } = req.body;
+        const { courseId, validDate, expiryDate  } = req.body;
 
         // validation for courseId in req.params
 
@@ -19,6 +19,25 @@ const addTrainingValidator = (req, res, next) => {
         } else if (!isValidObjectId(employeeId)) {
 
             errors.employeeId = 'Employee Id Should be a valid string';
+
+        }
+        if (isEmpty(validDate)) {
+
+            errors.validDate = 'Valid Date is required.';
+
+        } else if (!isString(validDate)) {
+
+            errors.validDate = 'Valid Date is not valid string.';
+
+        }
+
+        if (isEmpty(expiryDate)) {
+
+            errors.expiryDate = 'Expiry Date is required.';
+
+        } else if (!isString(expiryDate)) {
+
+            errors.expiryDate = 'Expiry Date is not valid string.';
 
         }
 
@@ -133,13 +152,24 @@ const updateTrainingByIdValidator = (req, res, next) => {
 
         }
 
-        const { trainingStatus } = req.body;
+        const { trainingStatus, validDate, expiryDate  } = req.body;
 
 
         if (!isEmpty(trainingStatus) && !isString(trainingStatus)) {
 
             errors.trainingStatus = 'training status is not valid.';
 
+            
+        }
+           if (validDate && !isString(validDate)) {
+
+            errors.validDate = 'Valid Date is not valid string.';
+
+        }
+
+        if (expiryDate && !isString(expiryDate)) {
+
+            errors.expiryDate = 'Expiry Date is not valid string.';
         }
 
         //check error object, if there's an error then it's length will not be zero

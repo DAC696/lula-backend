@@ -17,7 +17,7 @@ const addTraining = async (req, res, next) => {
 
     const { employeeId } = req.params;
 
-    const { courseId } = req.body;
+    const { courseId, validDate, expiryDate  } = req.body;
 
     const course = await CourseModel.getCourseById(courseId);
 
@@ -39,6 +39,8 @@ const addTraining = async (req, res, next) => {
       _id: mongoose.Types.ObjectId(),
       _courseId: courseId,
       trainingStatus: "Outstanding",
+      validDate,
+      expiryDate,
       _employeeId: employeeId,
       _created_by: user._id
 
@@ -49,8 +51,8 @@ const addTraining = async (req, res, next) => {
       courseName: course.courseName,
       courseType: course.courseType,
       isMandatory: course.isMandatory,
-      validDate: course.validDate,
-      expiryDate: course.expiryDate
+      // validDate: course.validDate,
+      // expiryDate: course.expiryDate
 
     });
 
@@ -70,8 +72,8 @@ const addTraining = async (req, res, next) => {
       courseName: course.courseName,
       courseType: course.courseType,
       isMandatory: course.isMandatory,
-      validDate: course.validDate,
-      expiryDate: course.expiryDate
+      // validDate: course.validDate,
+      // expiryDate: course.expiryDate
 
     }
 
@@ -116,13 +118,14 @@ const updateTrainingById = async (req, res, next) => {
 
     }
 
-    const { trainingStatus } = req.body;
+    const { trainingStatus, validDate, expiryDate } = req.body;
 
     //prepare object for storing user in db
     const updateData = {}
 
     if (trainingStatus) updateData["trainingStatus"] = trainingStatus;
-
+    if (validDate) updateData["validDate"] = validDate;
+    if (expiryDate) updateData["expiryDate"] = expiryDate;
     if (!Object.keys(updateData).length) {
 
       return res.status(StatusCodes.FORBIDDEN).json({

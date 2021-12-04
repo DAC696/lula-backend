@@ -16,7 +16,7 @@ const addCourse = async (req, res, next) => {
     //fetch used from token
     const user = req.userData;
 
-    let { courseName, courseType, isMandatory, validDate, expiryDate } = req.body;
+    let { courseName, courseType, isMandatory} = req.body;
 
     //prepare object for storing user in db
     const prepObj = {
@@ -25,8 +25,6 @@ const addCourse = async (req, res, next) => {
       courseName,
       courseType,
       isMandatory,
-      validDate,
-      expiryDate,
       _created_by: user._id
 
     }
@@ -192,7 +190,7 @@ const updateCourseById = async (req, res, next) => {
 
     }
 
-    let { courseName, courseType, isMandatory, validDate, expiryDate } = req.body;
+    let { courseName, courseType, isMandatory } = req.body;
 
     //prepare object for storing user in db
     const updateData = {}
@@ -200,8 +198,8 @@ const updateCourseById = async (req, res, next) => {
     if (courseName) updateData["courseName"] = courseName;
     if (courseType) updateData["courseType"] = courseType;
     if (!isEmpty(isMandatory)) updateData["isMandatory"] = isMandatory;
-    if (validDate) updateData["validDate"] = validDate;
-    if (expiryDate) updateData["expiryDate"] = expiryDate;
+    // if (validDate) updateData["validDate"] = validDate;
+    // if (expiryDate) updateData["expiryDate"] = expiryDate;
 
     if (!Object.keys(updateData).length) {
 

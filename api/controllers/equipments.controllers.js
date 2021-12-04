@@ -18,7 +18,6 @@ const addEquipment = async (req, res, next) => {
 
     const {
       systems,
-      reference,
       equipmentName,
       manufacturer,
       model,
@@ -49,14 +48,12 @@ const addEquipment = async (req, res, next) => {
 
       })
     }
-    const referenceNumber = `${location.locId}-0000${allLocations.length}`;
-    console.log(referenceNumber);
+    const reference = `${location.locId}-0000${allLocations.length}`;
     //prepare object for storing equipment in db
 
     const prepObj = {
       _id: mongoose.Types.ObjectId(),
       systems,
-      referenceNumber,
       reference,
       equipmentName,
       manufacturer,
