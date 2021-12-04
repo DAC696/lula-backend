@@ -308,9 +308,9 @@ const exportPpe = async (req, res, next) => {
       result = result.concat(newArray);
     });
 
-    const uniquePpe = [...new Set(result)];
+    // const uniquePpe = [...new Set(result)];
         
-    const newArrayPPe = uniquePpe.map((p,i) =>
+    const newArrayPPe = result.map((p,i) =>
     {
     
       return { name: p,id:i+1 };
