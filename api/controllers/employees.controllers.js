@@ -453,7 +453,7 @@ const updateEmployeeById = async (req, res, next) => {
 
     }
 
-    let {   firstName, lastName, password, roleId, phoneNumber, email, address,
+    let {   firstName, lastName, roleId, phoneNumber, email, address,
       homePhoneNumber,
       street,
       houseNumber,
@@ -515,15 +515,15 @@ const updateEmployeeById = async (req, res, next) => {
     if (city !== undefined && city !== null && city !== "undefined" && city !== "null") updateData["city"] = city;
     if (state !== undefined && state !== null && state !== "undefined" && state !== "null") updateData["state"] = state;
 
-    if (password) {
+    // if (password) {
 
-      const salt = await bcrypt.genSalt(10);
+    //   const salt = await bcrypt.genSalt(10);
 
-      let passwordHash = await bcrypt.hash(password, salt);
+    //   let passwordHash = await bcrypt.hash(password, salt);
 
-      updateData["password"] = passwordHash
+    //   updateData["password"] = passwordHash
 
-    };
+    // };
 
     if (primaryFamilyMemberName !== undefined && primaryFamilyMemberName !== null && primaryFamilyMemberName !== "undefined" && primaryFamilyMemberName !== "null") updateData["primaryFamilyMemberName"] = primaryFamilyMemberName;
     if (primaryFamilyMemberPhone !== undefined && primaryFamilyMemberPhone !== null && primaryFamilyMemberPhone !== "undefined" && primaryFamilyMemberPhone !== "null") updateData["primaryFamilyMemberPhone"] = primaryFamilyMemberPhone;
