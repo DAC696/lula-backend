@@ -146,6 +146,7 @@ const enlistAllSalaryCalculatorsByType = async (salaryCalculators) =>
         {
             const location = await Location.findById(salaryCalculators.locId);
             const employess = await Employee.find({ _locationId: location._id });
+            console.log(employess);
                 const startDate =moment(salaryCalculators.fromDate).format('YYYY-MM-DD');
             const endDate = moment(salaryCalculators.toDate).format('YYYY-MM-DD');
             let employeeArray = [];
@@ -176,7 +177,7 @@ const enlistAllSalaryCalculatorsByType = async (salaryCalculators) =>
                         let dates = e.dates.slice(x)
                         e.dates = dates;
                         return e;
-                    } else if (!x && y) {
+                    } else if (!x && y||y==0) {
                         let dates = e.dates.slice(0, y + 1)
                         e.dates = dates;
                         return e;
@@ -249,7 +250,7 @@ const enlistAllSalaryCalculatorsByType = async (salaryCalculators) =>
                         let dates = e.dates.slice(x)
                         e.dates = dates;
                         return e;
-                    } else if (!x && y) {
+                    } else if (!x && y||y==0) {
                         let dates = e.dates.slice(0, y + 1)
                         e.dates = dates;
                         return e;
