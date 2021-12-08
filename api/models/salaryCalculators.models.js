@@ -192,6 +192,8 @@ const enlistAllSalaryCalculatorsByType = async (salaryCalculators) =>
             
         } else if (salaryCalculators.type == 'date')
         {
+           
+
             const salaryCalculatorObject = await SalaryCalculator.find({ _employeeId: salaryCalculators.employId,startDate:{$gte:moment(salaryCalculators.fromDate)},endDate:{$lt:moment(salaryCalculators.toDate)}, })
                 .populate({ path: '_employeeId', select: "-_id firstName lastName", model: 'Employee', populate: { path: '_roleId', select: 'roleName -_id', model: 'Role' } })
                 .populate({path:'_employeeId',select: "-_id firstName lastName", model: 'Employee',populate:{path:'_locationId',select:'locName -_id',model:'Location'}})
@@ -228,15 +230,20 @@ const enlistAllSalaryCalculatorsByType = async (salaryCalculators) =>
             return newArray;
         } else if (salaryCalculators.type == 'all')
         {
-             const employess = await Employee.find();
+
+            const startDate =moment(salaryCalculators.fromDate).format('YYYY-MM-DD');
+            const endDate = moment(salaryCalculators.toDate).format('YYYY-MM-DD');
+            const employess = await Employee.find();
+            console.log(startDate,endDate)
             // console.log(employess);
             // const employeesIds = employess.map(e =>
             // {
             //     return e._id;
             // })
+            // console.log(employess.length);
             let employeeArray = [];
             for (var k = 0; k < employess.length; k++){
-                const salaryCalculatorObject = await SalaryCalculator.find({ _employeeId:  employess[k]._id , startDate: { $gte: moment(salaryCalculators.fromDate) }, endDate: { $lt: moment(salaryCalculators.toDate) }, })
+                const salaryCalculatorObject = await SalaryCalculator.find({ _employeeId:  employess[k]._id , dates: { $gte: startDate,$lte:endDate } })
                 .populate({ path: '_employeeId', select: "-_id firstName lastName", model: 'Employee', populate: { path: '_roleId', select: 'roleName -_id', model: 'Role' } })
                 .populate({path:'_employeeId',select: "-_id firstName lastName", model: 'Employee',populate:{path:'_locationId',select:'locName -_id',model:'Location'}})
                 .lean();
@@ -244,27 +251,58 @@ const enlistAllSalaryCalculatorsByType = async (salaryCalculators) =>
                 // .populate({ path: '_employeeId', select: "-_id firstName lastName", model: 'Employee', populate: { path: '_roleId', select: 'roleName -_id', model: 'Role' } })
                 // .populate({path:'_employeeId',select: "-_id firstName lastName", model: 'Employee',populate:{path:'_locationId',select:'locName -_id',model:'Location'}})
                 // .lean();
-            let seen = new Set(salaryCalculatorObject.map(v => v.code.name));
+                // console.log(employess[k]._id,salaryCalculatorObject.length);
+                let refinedSalaryArray = salaryCalculatorObject.map(e => {
+                    let x;
+                    let y;
+                    for (var l = 0; l < e.dates.length; l++) {
+                        if (e.dates[l] == startDate) {
+                            x = l;
+                        }
+                        if (e.dates[l] == endDate) {
+                            y = l;
+                        }
+                    }
+                    console.log(x, y);
+                    // e.dates.slice(x, y);
+                    // console.log(e.dates.slice(x, y+1));
+                    if (x && !y) {
+                        let dates = e.dates.slice(x)
+                        e.dates = dates;
+                        return e;
+                    } else if (!x && y) {
+                        let dates = e.dates.slice(0, y + 1)
+                        e.dates = dates;
+                        return e;
+                    } else {
+                        let dates = e.dates.slice(x, y);
+                        e.dates = dates;
+                        return e;
+                    }
+                });
+                // console.log(refinedSalraryArray);
+            let seen = new Set(refinedSalaryArray.map(v => v.code.name));
             let codeArray = [];
             seen.forEach(v => codeArray.push(v));
             let total = [];
             codeArray.map(c => total.push({ days: 0, flag: false }));
-            
+                // console.log("in code Array",codeArray);
             let newArray = [];
             for (var i = 0; i < codeArray.length; i++)
             {
-                for (var j = 0; j < salaryCalculatorObject.length; j++)
+                for (var j = 0; j < refinedSalaryArray.length; j++)
                 {
-                    if (codeArray[i] === salaryCalculatorObject[j].code.name)
+                    console.log("in salry calcualtor");
+                    if (codeArray[i] === refinedSalaryArray[j].code.name)
                         if (!total[i].flag)
                         {
-                            total[i].days = total[i].days + salaryCalculatorObject[j].dates.length;
-                            let data = { ...salaryCalculatorObject[j], total_days:total[i].days };
+                            total[i].days = total[i].days + refinedSalaryArray[j].dates.length;
+                            let data = { ...refinedSalaryArray[j], total_days:total[i].days };
                             total[i].flag=true;
                             newArray.push(data);
                         } else
                         {
-                            total[i].days = total[i].days + salaryCalculatorObject[j].dates.length;
+                            total[i].days = total[i].days + refinedSalaryArray[j].dates.length;
                             let data = { ...newArray[i], total_days: total[i].days };
                             newArray[i] = data;
                         }
