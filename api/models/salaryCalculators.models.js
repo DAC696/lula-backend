@@ -318,7 +318,7 @@ const enlistAllSalaryCalculatorsByType = async (salaryCalculators) =>
                 let refinedSalaryArray = salaryCalculatorObject.map(e => {
                     let x;
                     let y;
-                    console.log(e.dates);
+                    // console.log(e.dates);
                     for (var l = 0; l < e.dates.length; l++) {
                         if (e.dates[l] == startDate) {
                             x = l;
@@ -331,18 +331,26 @@ const enlistAllSalaryCalculatorsByType = async (salaryCalculators) =>
                     // e.dates.slice(x, y);
                     // console.log(e.dates.slice(x, y+1));
                     if (x && !y) {
+                        console.log("in x and not y");
                         let dates = e.dates.slice(x)
                         e.dates = dates;
                         return e;
-                    } else if (!x && y) {
-                        let dates = e.dates.slice(0, y + 1)
+                    } else if (!x && y||y==0) {
+                        y = y + 1;
+                        console.log("in y", y);
+                        let dates = e.dates.slice(0, y)
+                        console.log("dates", dates);
+                        e.dates = dates;
+                        console.log(e.dates);
+                        return e;
+                    } else if (x && y) {
+                        console.log("x and y");
+                        y = y + 1;
+                        let dates = e.dates.slice(x, y);
                         e.dates = dates;
                         return e;
-                    } else if(x &&y) {
-                        let dates = e.dates.slice(x, y+1);
-                        e.dates = dates;
-                        return e;
-                    } else {
+                    } else if (!x && !y) {
+                        console.log("not and not y");
                         return e;
                     }
                 });
@@ -358,7 +366,7 @@ const enlistAllSalaryCalculatorsByType = async (salaryCalculators) =>
             {
                 for (var j = 0; j < refinedSalaryArray.length; j++)
                 {
-                    console.log("in salry calcualtor");
+                    // console.log("in salry calcualtor");
                     if (codeArray[i] === refinedSalaryArray[j].code.name)
                         if (!total[i].flag)
                         {
