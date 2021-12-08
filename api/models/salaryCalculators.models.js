@@ -275,7 +275,7 @@ const enlistAllSalaryCalculatorsByType = async (salaryCalculators) =>
                         e.dates = dates;
                         return e;
                     } else {
-                        let dates = e.dates.slice(x, y);
+                        let dates = e.dates.slice(x, y+1);
                         e.dates = dates;
                         return e;
                     }
