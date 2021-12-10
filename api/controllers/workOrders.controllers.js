@@ -359,43 +359,88 @@ const updateWorkOrderById = async (req, res, next) => {
     // })
 
     async function doSomething (updatedWorkOrder) {
-      console.log("in function",updatedWorkOrder);
+      if (
+        updatedWorkOrder.parts &&
+        Array.isArray(updatedWorkOrder.parts) &&
+        updatedWorkOrder.parts.length
+      )
+        for (let part of updatedWorkOrder.parts) {
+          const { partId, partQuantity } = part
+
+          const partFound = await PartModel.getPartById(partId)
+
+          if (isEmpty(partFound)) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+              success: false,
+              hasError: true,
+              error: ['partFound Not found of this id']
+            })
+          }
+
+          if (partFound.quantity < partQuantity) {
+            return res.status(StatusCodes.FORBIDDEN).json({
+              success: false,
+              hasError: true,
+              error: ['Cannot subtract from the exceeded part quantity']
+            })
+          }
+
+          // minus quantity from the parts
+          const minusQuantity = partFound.quantity - partQuantity
+
+          const updatedPart = await PartModel.updatePartById(partId, {
+            quantity: minusQuantity
+          })
+
+          if (!updatedPart) {
+            return res.status(StatusCodes.BAD_GATEWAY).json({
+              success: false,
+              hasError: true,
+              error: ['Something Went Wrong']
+            })
+          }
+        }
 
       const prepObj = {
-          _id: mongoose.Types.ObjectId(),
-          taskName: updatedWorkOrder.taskName,
-          description: updatedWorkOrder.description,
-          status: "incomplete",
-          origin: updatedWorkOrder.origin,
-          jobType: updatedWorkOrder.jobType,
-          jobNumber: updatedWorkOrder.jobNumber,
-          jobPriority: updatedWorkOrder.jobPriority,
-          mainHours: updatedWorkOrder.mainHours,
-          taskFrequency: updatedWorkOrder.taskFrequency,
-          ptwRequired: updatedWorkOrder.ptwRequired,
-          parts: updatedWorkOrder.parts,
-          _roleId: updatedWorkOrder._roleId,
-          _equipmentId: updatedWorkOrder._equipmentId,
-          _created_by: updatedWorkOrder._created_by
+        _id: mongoose.Types.ObjectId(),
+        taskName: updatedWorkOrder.taskName,
+        description: updatedWorkOrder.description,
+        status: 'incomplete',
+        origin: updatedWorkOrder.origin,
+        jobType: updatedWorkOrder.jobType,
+        jobNumber: updatedWorkOrder.jobNumber,
+        jobPriority: updatedWorkOrder.jobPriority,
+        mainHours: updatedWorkOrder.mainHours,
+        taskFrequency: updatedWorkOrder.taskFrequency,
+        ptwRequired: updatedWorkOrder.ptwRequired,
+        parts: updatedWorkOrder.parts,
+        _roleId: updatedWorkOrder._roleId,
+        _equipmentId: updatedWorkOrder._equipmentId,
+        _created_by: updatedWorkOrder._created_by
       }
-      console.log("new", prepObj);
+      console.log('new', prepObj)
 
-        const workOrderSaved = await WorkOrderModel.addWorkOrder(prepObj, {
-          equipmentName: updatedWorkOrder._equipmentId.equipmentName,
-          roleName: updatedWorkOrder._roleId.roleName
-        });
-      let expired = { expiredAt: true };
-      const updatedWorkOrderExpired = await WorkOrderModel.updateWorkOrderById(updatedWorkOrder._id, expired);
-      event.emit('JOB COMPLETED');
+      const workOrderSaved = await WorkOrderModel.addWorkOrder(prepObj, {
+        equipmentName: updatedWorkOrder._equipmentId.equipmentName,
+        roleName: updatedWorkOrder._roleId.roleName
+      })
+      let expired = { expiredAt: true }
+      const updatedWorkOrderExpired = await WorkOrderModel.updateWorkOrderById(
+        updatedWorkOrder._id,
+        expired
+      )
+      event.emit('JOB COMPLETED')
     }
-    const task = cron.schedule(`${minutes} ${hours} ${date} ${month} *`, () => {
-      doSomething(updatedWorkOrder);
-    })
-
-    event.on('JOB COMPLETED', () => {
-    console.log('Job done!');
-    task.stop();
-});
+    // ${minutes} ${hours} ${date} ${month}
+    if (updatedWorkOrder.completedAt && !updatedWorkOrder.expiredAt) {
+      const task = cron.schedule(`20 * * * *`, () => {
+        doSomething(updatedWorkOrder)
+      })
+      event.on('JOB COMPLETED', () => {
+        console.log('Job done!')
+        task.stop()
+      })
+    }
 
     return res.status(StatusCodes.CREATED).json({
       success: true,
