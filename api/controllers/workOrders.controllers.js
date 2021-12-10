@@ -31,7 +31,8 @@ const addWorkOrder = async (req, res, next) => {
       taskFrequency,
       ptwRequired,
       roleId,
-      equipmentId
+      equipmentId,
+      hoursRun
     } = req.body
 
     const equipment = await EquipmentModel.getEquipmentById(equipmentId)
@@ -107,6 +108,7 @@ const addWorkOrder = async (req, res, next) => {
       taskFrequency,
       ptwRequired,
       parts,
+      hoursRun,
       _roleId: roleId,
       _equipmentId: equipmentId,
       _created_by: user._id

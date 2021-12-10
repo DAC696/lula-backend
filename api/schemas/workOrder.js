@@ -58,7 +58,8 @@ const workorderSchema = mongoose.Schema({
         trim: true
     },
     hoursRun: {
-        type:Boolean
+        type:Boolean,
+        default:false,
     },
     completedAt: {
         type:String,
