@@ -57,6 +57,16 @@ const workorderSchema = mongoose.Schema({
         type: String,
         trim: true
     },
+    hoursRun: {
+        type:Boolean
+    },
+    completedAt: {
+        type:String,
+    },
+    expiredAt: {
+        type: Boolean,
+        default:false
+    },
     _roleId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Role'
