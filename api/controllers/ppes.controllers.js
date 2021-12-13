@@ -9,6 +9,15 @@ const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const { v4: uuidv4 } = require('uuid');
 const { response } = require("express");
+const firebaseAdmin = require('firebase-admin');
+const serviceAccount = require('./firebasesdk.json');
+
+const admin = firebaseAdmin.initializeApp({
+    credential: firebaseAdmin.credential.cert(serviceAccount),
+});
+
+const storageRef = admin.storage().bucket(`gs://mdp-platform.appspot.com`);
+// const firebase = require('./firebase');
 
 
 const storageEngine = multer.diskStorage({
@@ -342,33 +351,50 @@ const exportPpe = async (req, res, next) => {
     };
     pdf.create(document, options).then(async response =>
     {
-      await cloudinary.uploader.upload(
-        response.filename,
-        {
-          resource_type: 'auto',
-          public_id: 'ppeUplaoder/' + uuidv4(),
-          chunk_size: 6000000,
-        },
-        function (error, result)
-        {
-          if (error)
-          {
-            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-              success: false,
-              hasError: true,
-              error: ["Internal Server Error"]
-
-            });
-             
-          }
-          return res.status(StatusCodes.OK).json({
+      
+     
+    let storage = await storageRef.upload(response.filename, {
+        public: true,
+        destination: `uploads/ppe.pdf`,
+        metadata: {
+            firebaseStorageDownloadTokens: uuidv4(),
+        }
+    });
+      console.log(storage[0].metadata);
+       return res.status(StatusCodes.OK).json({
 
             success: true,
             hasError: false,
-            payload: result.url
+            payload: storage[0].metadata.mediaLink
           });
-        }
-      );
+      
+      // await cloudinary.uploader.upload(
+      //   response.filename,
+      //   {
+      //     resource_type: 'auto',
+      //     public_id: 'ppeUplaoder/' + uuidv4(),
+      //     chunk_size: 6000000,
+      //   },
+      //   function (error, result)
+      //   {
+      //     if (error)
+      //     {
+      //       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      //         success: false,
+      //         hasError: true,
+      //         error: ["Internal Server Error"]
+
+      //       });
+             
+      //     }
+      //     return res.status(StatusCodes.OK).json({
+
+      //       success: true,
+      //       hasError: false,
+      //       payload: result.url
+      //     });
+      //   }
+      // );
 
 
     }).catch(err =>
