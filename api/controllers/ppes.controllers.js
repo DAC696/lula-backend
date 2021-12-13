@@ -327,7 +327,7 @@ const exportPpe = async (req, res, next) => {
     console.log(newArrayPPe);
     const html = fs.readFileSync(__dirname+'/pdf.html', 'utf8');
            const options = {
-  format: 'A3',
+  format: 'Letter',
   orientation: 'portrait',
              border: '10mm',
    footer: {
@@ -356,7 +356,7 @@ await cloudinary.uploader.upload(
         {
           resource_type: 'auto',
           public_id: 'ppeUplaoder/' + uuidv4(),
-          chunk_size: 6000000,
+          chunk_size: 600000,
         },
         function (error, result)
         {
