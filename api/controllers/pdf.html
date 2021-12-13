@@ -8,7 +8,8 @@
 box-sizing: inherit 
 } 
 body { 
-  font-size: 12px; 
+font-size: 8px;
+
 color: #000;
 
 }
@@ -22,7 +23,8 @@ border-collapse: collapse;
 padding: 5px;
 
           border:1px solid black;
-font-size: 5px;
+font-size: 8px;
+
 
         }
 
@@ -43,9 +45,17 @@ font-size: 5px;
 </head>
 <body>
   <div style="display:flex">
-    <span style="display:inline-block;height:15mm !important;width:60mm !important;background-color:purple; color:white;margin-left:20px;">SISTEMA DE GESTIÓN DE SEGURIDAD</span>
+<span
+  style="display:inline-block;height:10mm !important;width:60mm !important;background-color:purple; color:white;margin-left:20px;"
+  >SISTEMA DE GESTIÓN DE SEGURIDAD</span
+>
+
   <div style="text-align: center;">
-  <img style=" width:30mm" src="https://firebasestorage.googleapis.com/v0/b/acies-cfc88.appspot.com/o/logo.jpeg?alt=media&token=42424218-46ab-48e5-9b0c-ee3888985c85" />
+<img
+  style=" width:20mm"
+  src="https://firebasestorage.googleapis.com/v0/b/acies-cfc88.appspot.com/o/logo.jpeg?alt=media&token=42424218-46ab-48e5-9b0c-ee3888985c85"
+/>
+
   </div>
   </div>
     
@@ -59,59 +69,70 @@ font-size: 5px;
            <td></td>
             </tr>
             <tr>
-                <td style='padding: 10px;border:1px solid black'>Company name: ZAPOR SA </td>
-                <td style='padding: 10px;border:1px solid black'>tax identifier</td>
-                <td style='padding: 10px;border:1px solid black; border-right:none'>32483247983427</td>
-      <td style='padding: 10px;border:1px solid black; border-left:none'></td>
+<td>Company name: ZAPOR SA</td>
+<td>tax identifier</td>
+<td style=" border-right:none">32483247983427</td>
+<td style="border-left:none"></td>
+
             </tr>
             <tr>
-              <td style='padding: 10px;border:1px solid black'>Address: {{employee.address}} {{employee.street}}</td>
-            <td style='padding: 10px;border:1px solid black'>City: {{employee.city}}</td>
-            <td style='padding: 10px;border:1px solid black'>zipcode:{{employee.areaCode}}</td>
-            <td style='padding: 10px;border:1px solid black'>province:{{employee.state}}</td></tr>
+              <td >Address: {{employee.address}} {{employee.street}}</td>
+            <td >City: {{employee.city}}</td>
+            <td >zipcode:{{employee.areaCode}}</td>
+            <td >province:{{employee.state}}</td></tr>
             <tr>
-              <td style='padding: 10px;border:1px solid black'>Name: {{employee.firstName}} {{employee.lastName}}</td>
-            <td style='padding: 10px;border:1px solid black'>ID/Worker: {{employee.empId}}</td>
-            <td colspan="2" style='padding: 10px;border:1px solid black;'>Position {{employee._roleId.roleName}}</td>
+<td>Name: {{employee.firstName}} {{employee.lastName}}</td>
+<td>ID/Worker: {{employee.empId}}</td>
+<td colspan="2">Position {{employee._roleId.roleName}}</td>
+
             </tr>
            <tr style='border:1px solid black'> 
-             <td colspan='4' style='padding: 10px;border:1px solid black'>Brief description of the position: </td>
+<td colspan="4">Brief description of the position:</td>
+
             </tr>
             <tr>
-              <td colspan="4" style='padding: 10px;border:1px solid black;'>PPE for the position:  SEE DETAIL SGS  (SAFETY MANAGEMENT
-SYSTEM)</td></tr>
+<td colspan="4">PPE for the position: SEE DETAIL SGS (SAFETY MANAGEMENT</td>
+</tr>
            <tr>
-             <td style='padding: 10px;border:1px solid black'>The signing worker agrees to use personal or collective protective equipment and to observe their approppriate maintainance procedures. I hereby
-certify that I have been given the PERSONAL PROTECTION EQUIPMENT listed below, which I withdraw accordingly, stating my signature in the
-corresponding box. I declare to know the conditions of use, as well as the current legal provisions that make its use mandatory.</td>
-<td style='padding: 10px;border-bottom:1px solid black'></td>
-<td style='padding: 10px;border-top:1px solid black;border-bottom:1px solid black'></td>
-<td style='padding: 10px;border:1px solid black;border-left: none;'></td>
+<td>
+  The signing worker agrees to use personal or collective protective equipment
+  and to observe their approppriate maintainance procedures. I hereby certify
+  that I have been given the PERSONAL PROTECTION EQUIPMENT listed below, which I
+  withdraw accordingly, stating my signature in the corresponding box. I declare
+  to know the conditions of use, as well as the current legal provisions that
+  make its use mandatory.
+</td>
+<td></td>
+<td style="border-top:1px solid black;border-bottom:1px solid black"></td>
+<td style="border-left: none;"></td>
+
 </tr>
           
         </tbody>
         <table style="border-collapse: collapse;width: 100%;margin: 0 auto;">
                 <thead style='background-color:grey'>
-                    <td style='padding: 10px;border: 1px solid black'></td>
-                    <td style='padding: 10px;border: 1px solid black'>Product</td>
-                    <td style='padding: 10px;border: 1px solid black'>Type/Model</td>
-                    <td style='padding: 10px;border: 1px solid black'>Brand</td>
-                <td style='padding: 10px;border: 1px solid black'>Holds Certification</td>
-                <td style='padding: 10px;border: 1px solid black'>Number</td>
-                <td style='padding: 10px;border: 1px solid black'>Hands in Certificate</td>
-                <td style='padding: 10px;border: 1px solid black'>Workers Signature</td>
+<td></td>
+<td>Product</td>
+<td>Type/Model</td>
+<td>Brand</td>
+<td>Holds Certification</td>
+<td>Number</td>
+<td>Hands in Certificate</td>
+<td>Workers Signature</td>
+
                 </thead>
                 <tbody>
                   {{#each ppe}}
                     <tr>
                         <td style='padding: 10px;background-color:grey;border: 1px solid black''>{{this.id}}</td>
-                    <td style='padding: 10px;border: 1px solid black'>{{this.name}}</td>
-                    <td style='padding: 10px;border: 1px solid black'></td>
-                    <td style='padding: 10px;border: 1px solid black'></td>
-                <td style='padding: 10px;border: 1px solid black'></td>
-                <td style='padding: 10px;border: 1px solid black'></td>
-                <td style='padding: 10px;border: 1px solid black'></td>
-                <td style='padding: 10px;border: 1px solid black'></td>
+<td>{{this.name}}</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+
                     </tr>
                     {{/each}}
                 </tbody>
